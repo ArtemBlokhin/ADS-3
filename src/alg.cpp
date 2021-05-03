@@ -30,29 +30,29 @@ std::string infx2pstfx(std::string inf) {
   std::string NewStrPr;
   TStack <char> StackOfNumbers;
   for (int i = 0; i < inf.length(); i++) {
-    if (priority(inf[i]) == -1){
-      NewStr += inf[i] + " ";                
-    } else if (priority(inf[i]) == 0) {    
-      StackOfNumbers.push(inf[i]);        
+    if (priority(inf[i]) == -1) {
+      NewStr += inf[i] + " ";          
+    } else if (priority(inf[i]) == 0) {
+      StackOfNumbers.push(inf[i]);
     } else if (priority(inf[i]) == 1) {
       while (StackOfNumbers.get() != '(') {
-        NewStr += StackOfNumbers.get() + " ";  
+        NewStr += StackOfNumbers.get() + " "; 
         StackOfNumbers.pop();       
-      } 
-      StackOfNumbers.pop();          
+      }
+      StackOfNumbers.pop();        
     } else {
-      while (!StackOfNumbers.isEmpty() && priority(StackOfNumbers.get()) >= priority(inf[i])){
-          str += StackOfNumbers.get() + " ";
+      while (!StackOfNumbers.isEmpty() && priority(StackOfNumbers.get()) >= priority(inf[i])) {
+          NewStr += StackOfNumbers.get() + " ";
           StackOfNumbers.pop();
       }
-      StackOfNumbers.push(inf[i]);            
+      StackOfNumbers.push(inf[i]);         
     }
   }
-  while (!StackOfNumbers.isEmpty()){
-   NewStr += StackOfNumbers.get(); 
-   StackOfNumbers.pop();   
+  while (!StackOfNumbers.isEmpty()) {
+    NewStr += StackOfNumbers.get();
+    StackOfNumbers.pop();
   }
-  NewStrPr = NewStr.substr(0, NewStr.lenght()-1);
+  NewStrPr = NewStr.substr(0, NewStr.length()-1);
   return NewStrPr;
 }
 int calculation (int first,int second,char symbol) {
@@ -73,19 +73,19 @@ int calculation (int first,int second,char symbol) {
 }
 int eval(std::string pst) {
   TStack <char> StackOfNumbers;  
-  for (int i = 0;i<pst.length();i++){
+  for (int i = 0; i<pst.length(); i++) {
     int charpr = priority(pst[i]);
-    if (pst[i] <= '9' && pst[i] >= '0'){
-      StackOfNumbers.push(pst[i] - '0'); 
+    if (pst[i] <= '9' && pst[i] >= '0') {
+      StackOfNumbers.push(pst[i] - '0');
     } else if (pst[i] != ' ') {
       int first = StackOfNumbers.get();
       StackOfNumbers.pop();
       int second = StackOfNumbers.get();
       StackOfNumbers.pop();
-      int result = calculation(first,second,pst[i]);
-      StackOfNumbers.push(result);                 
-    }   
+      int result = calculation(first, second,pst[i]);
+      StackOfNumbers.push(result);              
+    }
   }
   int result = StackOfNumbers.get();
-  return result;  
+  return result;
 }
