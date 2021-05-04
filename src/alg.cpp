@@ -28,6 +28,7 @@ int priority(char symbol) {
 std::string infx2pstfx(std::string inf) {
   std::string NewStr;
   std::string NewStrPr;
+  std::string Temp;
   TStack <char> StackOfNumbers;
   for (int i = 0; i < inf.length(); i++) {
     if (priority(inf[i]) == -1) {
@@ -36,8 +37,9 @@ std::string infx2pstfx(std::string inf) {
       StackOfNumbers.push(inf[i]);
     } else if (priority(inf[i]) == 1) {
       while (StackOfNumbers.get() != '(') {
-        NewStr += StackOfNumbers.get() + " "; 
-        StackOfNumbers.pop();       
+        Temp = StackOfNumbers.get();
+        NewStr += Temp + " "; 
+        StackOfNumbers.pop();      
       }
       StackOfNumbers.pop();        
     } else {
@@ -71,7 +73,7 @@ int calculation (int first,int second,char symbol) {
       break;       
   }
 }
-int eval(std::string pst) {
+int eval (std::string pst) {
   TStack <char> StackOfNumbers;  
   for (int i = 0; i<pst.length(); i++) {
     int charpr = priority(pst[i]);
@@ -83,7 +85,7 @@ int eval(std::string pst) {
       int second = StackOfNumbers.get();
       StackOfNumbers.pop();
       int result = calculation(first, second,pst[i]);
-      StackOfNumbers.push(result);              
+      StackOfNumbers.push(result);        
     }
   }
   int result = StackOfNumbers.get();
