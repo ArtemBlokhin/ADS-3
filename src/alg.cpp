@@ -36,7 +36,7 @@ std::string infx2pstfx(std::string inf) {
   for (int i = 0; i < inf.length(); i++) {
     if (pr(inf[i]) == -1) {
       Temp = inf[i];
-      NewStr += temp + " ";         
+      NewStr += Temp + " ";       
     } else if (pr(inf[i]) == 0) {
       StackN.push(inf[i]);
     } else if (pr(inf[i]) == 1) {
@@ -77,8 +77,8 @@ int calculation(int first, int second, char symbol) {
       break;
   }
 }
-int eval (std::string pst) {
-  TStack <char> StackN;
+int eval(std::string pst) {
+  TStack<char>StackN;
   for (int i = 0; i<pst.length(); i++) {
     if (pst[i] <= '9' && pst[i] >= '0') {
       StackN.push(pst[i] - '0');
@@ -87,10 +87,10 @@ int eval (std::string pst) {
       StackN.pop();
       int second = StackN.get();
       StackN.pop();
-      int result = calculation(first, second,pst[i]);
-      StackN.push(result);       
+      int result = calculation(first, second, pst[i]);
+      StackN.push(result);      
     }
   }
-  int result = StackNs.get();
+  int result = StackN.get();
   return result;
 }
