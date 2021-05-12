@@ -34,12 +34,12 @@ std::string infx2pstfx(std::string inf) {
   std::string Temp;
   TStack <char> StackN;
   for (int i = 0; i < inf.length(); i++) {
-    if (pr(inf[i]) == -1) {
+    if (inf[i] >= '0' && inf[i] <= '9') {
       Temp = inf[i];
       NewStr += Temp + " ";       
-    } else if (pr(inf[i]) == 0) {
+    } else if (inf[i] == '(') {
       StackN.push(inf[i]);
-    } else if (pr(inf[i]) == 1) {
+    } else if (inf[i] == ')') {
       while (StackN.get() != '(') {
         Temp = StackN.get();
         NewStr += Temp + " ";
