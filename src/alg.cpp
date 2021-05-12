@@ -36,7 +36,7 @@ std::string infx2pstfx(std::string inf) {
   for (int i = 0; i < inf.length(); i++) {
     if (inf[i] >= '0' && inf[i] <= '9') {
       Temp = inf[i];
-      NewStr += Temp + " ";       
+      NewStr += Temp + " ";    
     } else if (inf[i] == '(') {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
