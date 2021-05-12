@@ -23,7 +23,7 @@ int prio(char symbol) {
       break;
     default:
       return -1;
-      break                 
+      break;                
   }
 }
 
