@@ -1,7 +1,7 @@
 // Copyright 2021 NNTU-CS
 #include <string>
 #include "tstack.h"
-int prio(char symbol) {
+int pr(char symbol) {
   switch (symbol) {
     case '(':
       return 0;
@@ -23,7 +23,7 @@ int prio(char symbol) {
       break;
     default:
       return -1;
-      break;                
+      break;
   }
 }
 
@@ -32,36 +32,36 @@ std::string infx2pstfx(std::string inf) {
   std::string NewStr;
   std::string NewStrPr;
   std::string Temp;
-  TStack <char> StackOfNumbers;
+  TStack <char> StackN;
   for (int i = 0; i < inf.length(); i++) {
     if (pr(inf[i]) == -1) {
-      temp = inf[i];
-      NewStr += temp + " ";          
+      Temp = inf[i];
+      NewStr += temp + " ";         
     } else if (pr(inf[i]) == 0) {
-      StackOfNumbers.push(inf[i]);
+      StackN.push(inf[i]);
     } else if (pr(inf[i]) == 1) {
-      while (StackOfNumbers.get() != '(') {
-        Temp = StackOfNumbers.get();
-        NewStr += Temp + " "; 
-        StackOfNumbers.pop();      
+      while (StackN.get() != '(') {
+        Temp = StackN.get();
+        NewStr += Temp + " ";
+        StackN.pop();
       }
-      StackOfNumbers.pop();        
+      StackN.pop();
     } else {
-      while (!StackOfNumbers.isEmpty() && pr(StackOfNumbers.get()) >= pr(inf[i])) {
-          NewStr += StackOfNumbers.get() + " ";
-          StackOfNumbers.pop();
+      while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
+          NewStr += StackN.get() + " ";
+          StackN.pop();
       }
-      StackOfNumbers.push(inf[i]);         
+      StackN.push(inf[i]);
     }
   }
-  while (!StackOfNumbers.isEmpty()) {
-    NewStr += StackOfNumbers.get() + " ";
-    StackOfNumbers.pop();
+  while (!StackN.isEmpty()) {
+    NewStr += StackN.get() + " ";
+    StackN.pop();
   }
   NewStrPr = NewStr.substr(0, NewStr.length()-1);
   return NewStrPr;
 }
-int calculation (int first,int second,char symbol) {
+int calculation(int first, int second, char symbol) {
   switch (symbol) {
     case '+':
       return first + second;
@@ -74,24 +74,23 @@ int calculation (int first,int second,char symbol) {
       break;
     case '/':
       return first / second;
-      break;   
+      break;
   }
 }
 int eval (std::string pst) {
-  TStack <char> StackOfNumbers;  
+  TStack <char> StackN;
   for (int i = 0; i<pst.length(); i++) {
-    int charpr = priority(pst[i]);
     if (pst[i] <= '9' && pst[i] >= '0') {
-      StackOfNumbers.push(pst[i] - '0');
+      StackN.push(pst[i] - '0');
     } else if (pst[i] != ' ') {
-      int first = StackOfNumbers.get();
-      StackOfNumbers.pop();
-      int second = StackOfNumbers.get();
-      StackOfNumbers.pop();
+      int first = StackN.get();
+      StackN.pop();
+      int second = StackN.get();
+      StackN.pop();
       int result = calculation(first, second,pst[i]);
-      StackOfNumbers.push(result);        
+      StackN.push(result);       
     }
   }
-  int result = StackOfNumbers.get();
+  int result = StackNs.get();
   return result;
 }
