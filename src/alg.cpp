@@ -5,25 +5,18 @@ int pr(char symbol) {
   switch (symbol) {
     case '(':
       return 0;
-      break;
     case ')':
       return 1;
-      break;
     case '+':
       return 2;
-      break;
     case '-':
       return 2;
-      break;
     case '*':
       return 3;
-      break;
     case '/':
       return 3;
-      break;
     default:
       return -1;
-      break;
   }
 }
 
@@ -34,9 +27,9 @@ std::string infx2pstfx(std::string inf) {
   std::string Temp;
   TStack <char> StackN;
   for (int i = 0; i < inf.length(); i++) {
-    if (inf[i] >= '0' && inf[i] <= '9') {
+    if ((inf[i] >= '0') && (inf[i] <= '9')) {
       Temp = inf[i];
-      NewStr += Temp + " ";    
+      NewStr += Temp + " ";
     } else if (inf[i] == '(') {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
@@ -78,9 +71,9 @@ int calculation(int first, int second, char symbol) {
   }
 }
 int eval(std::string pst) {
-  TStack<char>StackN;
+  TStack <int> StackN;
   for (int i = 0; i<pst.length(); i++) {
-    if (pst[i] <= '9' && pst[i] >= '0') {
+    if ((pst[i] <= '9') && (pst[i] >= '0')) {
       StackN.push(pst[i] - '0');
     } else if (pst[i] != ' ') {
       int first = StackN.get();
@@ -88,7 +81,7 @@ int eval(std::string pst) {
       int second = StackN.get();
       StackN.pop();
       int result = calculation(first, second, pst[i]);
-      StackN.push(result);      
+      StackN.push(result);
     }
   }
   int result = StackN.get();
