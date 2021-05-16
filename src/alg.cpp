@@ -33,22 +33,27 @@ std::string infx2pstfx(std::string inf) {
     } else if (inf[i] == '(') {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
-      while (StackN.get() != '(') {
-        Temp = StackN.get();
+      char top = StackN.get();
+      StackN.pop();
+      while (top != '(') {
+        Temp = top;
         NewStr += Temp + " ";
+        top = StackN.get();
         StackN.pop();
       }
       StackN.pop();
     } else {
       while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
-          NewStr += StackN.get() + " ";
+          Temp = StackN.get();
+          NewStr += Temp + " ";
           StackN.pop();
       }
       StackN.push(inf[i]);
     }
   }
   while (!StackN.isEmpty()) {
-    NewStr += StackN.get() + " ";
+    Temp = StackN.get();
+    NewStr += Temp + " ";
     StackN.pop();
   }
   NewStrPr = NewStr.substr(0, NewStr.length()-1);
@@ -72,7 +77,7 @@ int calculation(int first, int second, char symbol) {
 }
 int eval(std::string pst) {
   TStack <int> StackN;
-  for (int i = 0; i<pst.length(); i++) {
+  for (int i = 0; i < pst.length(); i++) {
     if ((pst[i] <= '9') && (pst[i] >= '0')) {
       StackN.push(pst[i] - '0');
     } else if (pst[i] != ' ') {
