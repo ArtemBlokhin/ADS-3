@@ -36,10 +36,10 @@ std::string infx2pstfx(std::string inf) {
       while (!stack.isEmpty() && stack.get() != '(') {
         Temp = stack.get();
         NewStr += Temp + " ";
-        stack.pop();
+        StackN.pop();
       }
       if (stack.get() == '(') {
-        stack.pop();
+        StackN.pop();
       }
     } else {
       while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
