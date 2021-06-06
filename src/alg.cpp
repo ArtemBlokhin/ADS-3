@@ -33,15 +33,14 @@ std::string infx2pstfx(std::string inf) {
     } else if (inf[i] == '(') {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
-      char top = StackN.get();
-      StackN.pop();
-      while (top != '(') {
-        Temp = top;
+      while (!stack.isEmpty() && stack.get() != '(') {
+        Temp = stack.get();
         NewStr += Temp + " ";
-        top = StackN.get();
-        StackN.pop();
+        stack.pop();
       }
-      StackN.pop();
+      if (stack.get() == '(') {
+        stack.pop();
+      }
     } else {
       while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
           Temp = StackN.get();
