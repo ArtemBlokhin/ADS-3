@@ -33,8 +33,8 @@ std::string infx2pstfx(std::string inf) {
     } else if (inf[i] == '(') {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
-      while (!stack.isEmpty() && stack.get() != '(') {
-        Temp = stack.get();
+      while (!StackN.isEmpty() && StackN.get() != '(') {
+        Temp = StackN.get();
         NewStr += Temp + " ";
         StackN.pop();
       }
