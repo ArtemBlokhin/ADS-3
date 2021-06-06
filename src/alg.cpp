@@ -1,18 +1,16 @@
 // Copyright 2021 NNTU-CS
 #include <string>
 #include "tstack.h"
-int pr(char symbol) {
-  switch (symbol) {
+int prioritet(char sym) {
+  switch (sym) {
     case '(':
       return 0;
     case ')':
       return 1;
     case '+':
-      return 2;
     case '-':
       return 2;
     case '*':
-      return 3;
     case '/':
       return 3;
     default:
@@ -20,78 +18,72 @@ int pr(char symbol) {
   }
 }
 
-
 std::string infx2pstfx(std::string inf) {
-  std::string NewStr;
-  std::string Temp;
-  TStack <char> StackN;
-  for (int i = 0; i < inf.length(); i++) {
-    if ((inf[i] >= '0') && (inf[i] <= '9')) {
-      NewStr += inf[i];
-      NewStr += ' ';
-    } else if (inf[i] == '(') {
-      StackN.push(inf[i]);
-    } else if (pr(inf[i]) > pr(StackN.get()) || StackN.isEmpty()) {
-      StackN.push(inf[i]);
-    } else if (inf[i] == ')') {
-      while (!StackN.isEmpty() && StackN.get() != '(') {
-        NewStr += StackN.get();
-        NewStr += ' ';
-        StackN.pop();
-      }
-      if (StackN.get() == '(') {
-        StackN.pop();
+TStack<char> stackChar;
+  std::string res;
+  int i = 0;
+  char top = 0;
+
+  for (i; i < inf.length(); i++) {
+    int p;
+    p = prioritet(inf[i]);
+    if (p > -1) {
+      if ((p == 0 || p > prioritet(top) || stackChar.isEmpty()) &&
+          inf[i] != ')') {
+        if (stackChar.isEmpty()) top = inf[i];
+        stackChar.push(inf[i]);
+      } else if (inf[i] == ')') {
+        while (stackChar.get() != '(') {
+          res.push_back(stackChar.get());
+          res.push_back(' ');
+          stackChar.pop();
+        }
+        stackChar.pop();
+        if (stackChar.isEmpty()) top = 0;
+      } else {
+        while (!stackChar.isEmpty() && prioritet(stackChar.get()) >= p) {
+          res.push_back(stackChar.get());
+          res.push_back(' ');
+          stackChar.pop();
+        }
+        if (stackChar.isEmpty()) top = inf[i];
+        stackChar.push(inf[i]);
       }
     } else {
-      while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
-        NewStr += StackN.get();
-        NewStr += ' ';
-        StackN.pop();
-      }
-      StackN.push(inf[i]);
-      }
+      res.push_back(inf[i]);
+      res.push_back(' ');
     }
-  while (!StackN.isEmpty()) {
-        NewStr += StackN.get();
-        NewStr += ' ';
-        StackN.pop();
   }
+  while (!stackChar.isEmpty()) {
+    res.push_back(stackChar.get());
+    res.push_back(' ');
+    stackChar.pop();
+  }
+  res.erase(res.end() - 1, res.end());
 
-  while (NewStr[NewStr.length() - 1] == ' ') {
-    NewStr = NewStr.substr(0, NewStr.length()-1);
-  }
-  return NewStr;
+  return res;
 }
-int calculation(int first, int second, char symbol) {
-  switch (symbol) {
-    case '+':
-      return first + second;
-      break;
-    case '-':
-      return first - second;
-      break;
-    case '*':
-      return first * second;
-      break;
-    case '/':
-      return first / second;
-      break;
-  }
-}
+
 int eval(std::string pst) {
-  TStack <int> StackN;
+  TStack<int> stack;
+
   for (int i = 0; i < pst.length(); i++) {
-    if ((pst[i] <= '9') && (pst[i] >= '0')) {
-      StackN.push(pst[i] - '0');
+    if (pst[i] <= '9' && pst[i] >= '0') {
+      stack.push(pst[i] - '0');
     } else if (pst[i] != ' ') {
-      int first = StackN.get();
-      StackN.pop();
-      int second = StackN.get();
-      StackN.pop();
-      int result = calculation(first, second, pst[i]);
-      StackN.push(result);
+      int a = stack.get();
+      stack.pop();
+      int b = stack.get();
+      stack.pop();
+      if (pst[i] == '-')
+        stack.push(b - a);
+      else if (pst[i] == '+')
+        stack.push(b + a);
+      else if (pst[i] == '*')
+        stack.push(b * a);
+      else
+        stack.push(b / a);
     }
   }
-  int result = StackN.get();
-  return result;
+  return stack.get();
 }
