@@ -23,19 +23,20 @@ int pr(char symbol) {
 
 std::string infx2pstfx(std::string inf) {
   std::string NewStr;
-  std::string NewStrPr;
   std::string Temp;
   TStack <char> StackN;
   for (int i = 0; i < inf.length(); i++) {
     if ((inf[i] >= '0') && (inf[i] <= '9')) {
-      Temp = inf[i];
-      NewStr += Temp + " ";
+      NewStr += inf[i];
+      NewStr += ' ';
     } else if (inf[i] == '(') {
+      StackN.push(inf[i]);
+    } else if (pr(inf[i]) > pr(StackN.get()) || StackN.isEmpty()) {
       StackN.push(inf[i]);
     } else if (inf[i] == ')') {
       while (!StackN.isEmpty() && StackN.get() != '(') {
-        Temp = StackN.get();
-        NewStr += Temp + " ";
+        NewStr += StackN.get();
+        NewStr += ' ';
         StackN.pop();
       }
       if (StackN.get() == '(') {
@@ -43,20 +44,23 @@ std::string infx2pstfx(std::string inf) {
       }
     } else {
       while (!StackN.isEmpty() && pr(StackN.get()) >= pr(inf[i])) {
-          Temp = StackN.get();
-          NewStr += Temp + " ";
-          StackN.pop();
+        NewStr += StackN.get();
+        NewStr += ' ';
+        StackN.pop();
       }
       StackN.push(inf[i]);
+      }
     }
-  }
   while (!StackN.isEmpty()) {
-    Temp = StackN.get();
-    NewStr += Temp + " ";
-    StackN.pop();
+        NewStr += StackN.get();
+        NewStr += ' ';
+        StackN.pop();
   }
-  NewStrPr = NewStr.substr(0, NewStr.length()-1);
-  return NewStrPr;
+
+  while (NewStr[NewStr.length() - 1] == ' ') {
+    NewStr = NewStr.substr(0, NewStr.length()-1);
+  }
+  return NewStr;
 }
 int calculation(int first, int second, char symbol) {
   switch (symbol) {
