@@ -38,7 +38,7 @@ std::string infx2pstfx(std::string inf) {
         NewStr += Temp + " ";
         StackN.pop();
       }
-      if (stack.get() == '(') {
+      if (StackN.get() == '(') {
         StackN.pop();
       }
     } else {
